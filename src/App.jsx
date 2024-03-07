@@ -1,10 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import './App.css';
+import { Box, Container, AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import React, { useEffect, useRef, useState } from 'react';
+
 
 function App() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const photoRef = useRef(null);
+
+  const [images, setImages] = useState([])
 
   const constraints = {
     video: { width: 420, height: 340 },
@@ -26,10 +29,15 @@ function App() {
   };
 
   const handlePhotoClick = () => {
+    
     const context = canvasRef.current.getContext('2d');
     context.drawImage(videoRef.current, 0, 0, 420, 340);
     const data = canvasRef.current.toDataURL('image/png');
-    photoRef.current.src = data;
+
+    if(images.length < 3 ){
+      setImages([...images, data]);
+    }
+    
   };
 
   useEffect(()=> {
@@ -37,21 +45,65 @@ function App() {
   },[])
 
   return (
-    <div className="App">
-      <header>CDAI Video</header>
+
+    <Box sx={{maxWidth: '100%'}}>
+
+      <header>
+          <AppBar position="static">
+            <Toolbar variant="dense">
+              <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" component="div">
+                Photos
+              </Typography>
+            </Toolbar>
+          </AppBar>
+      </header>
+
+      <Container sx={{ display: 'flex', justifyContent: 'center', minWidth: '100%'}}>
+     
       <section className="cam-container">
-        <div className="video-wrap">
+      <Box sx={{display: 'flex', justifyContent: 'center', m: 2}} >
+        <Typography variant='h3'>
+            Conteo de aforo inteligente
+          </Typography>
+        </Box>
+        
+        <Box sx={{display: 'flex', justifyContent: 'center', m: 4}} >
           <video className="video" ref={videoRef}></video>
+        </Box>
+        <div className="canvas-wrap" style={{display: 'none'}}>
+          <canvas className="canvas" width="400" height="320" ref={canvasRef}></canvas>
+          {console.log(images)}
         </div>
-        <div className="canvas-wrap">
-          <canvas className="canvas" width="420" height="340" ref={canvasRef}></canvas>
-          <img src="" className="photo" alt="photo" ref={photoRef} />
-        </div>
-        <div>
-          <button className="start-btn" onClick={handlePhotoClick}>PHOTO</button>
-        </div>
+        <Box sx={{display: 'flex', justifyContent: 'center', m: 4}}>
+          <Button variant='contained' onClick={handlePhotoClick}>Take a Photo</Button>
+
+        </Box>
+        
+        { 
+        images.length !== 0 ?
+        <Box sx={{display: 'flex', gap: '30px', justifyContent: 'center'}}>
+          {images.map(img => 
+          <img src={img} width="200px" className="photo" alt="photo" />  
+          )}
+        </Box>
+        :
+        <></>
+        }
+       
+        
+        {console.log(images)}
       </section>
-    </div>
+
+      </Container>
+    </Box>
+    
+      
+      
+    
+    
   );
 }
 
