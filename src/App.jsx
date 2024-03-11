@@ -51,6 +51,13 @@ function App() {
     }
   };
 
+  
+  const handleResetClick = () => {
+    setImages([]); // Establece el estado de las imágenes a un arreglo vacío
+    setResponseData(false); //quita el mensaje
+  };
+
+
   const sendImages = async (data) => {
     const formData = new FormData();
     data.forEach((element, index) => {
@@ -129,7 +136,7 @@ function App() {
           </div>
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 4 }}>
             <Button variant='contained' onClick={handlePhotoClick} style={{backgroundColor:'#00a388'}}>Take a Photo</Button>
-            <Button variant='contained'  style={{backgroundColor:'#ff5362', marginLeft:'8px'}}>Reset</Button>
+            <Button variant='contained'  onClick={handleResetClick} style={{backgroundColor:'#ff5362', marginLeft:'8px'}}>Reset</Button>
           </Box>
 
           
