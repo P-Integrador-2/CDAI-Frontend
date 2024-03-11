@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import MyIcon from './assets/imageIcon.png'
 import { RotatingSquare} from 'react-loader-spinner'
 
+
+
 function App() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
