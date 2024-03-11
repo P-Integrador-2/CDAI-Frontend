@@ -11,7 +11,7 @@ function App() {
 
   const [images, setImages] = useState([])
   const [progress, setProgress] = useState(false);
-  
+  const [responseData, setResponseData] = useState(null);
 
   const constraints = {
     video: { width: 520, height: 340 },
@@ -65,7 +65,7 @@ function App() {
         }
       });
       console.log(response.data);
-      
+      setResponseData(response.data);
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
     }finally {
@@ -113,7 +113,13 @@ function App() {
                 <RotatingSquare   height="80"  width="80" color="#00a388"   ariaLabel="loading"  wrapperStyle={{marginLeft:'43%', marginTop:'25%'}}  wrapperClass="" visible={true}/>
               </div>
             )}
-          
+          {!progress && responseData && (
+            <div style={{ backgroundColor:'#FFFFFF', position: 'absolute', width: '520px', height: '340px'}}>
+              <Typography variant="h5" color="#00a388" marginLeft='31%' marginTop='25%'>
+                Namber of people: {responseData.promedio_respuestas}
+               </Typography>
+            </div>
+          )}  
             <video className="video" ref={videoRef}></video>
 
           </div>
