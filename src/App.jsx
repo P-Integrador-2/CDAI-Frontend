@@ -53,7 +53,7 @@ function App() {
     });
 
     try {
-      const response = await axios.post("http://localhost:5000/", formData, {
+      const response = await axios.post("https://cdaiserver.pythonanywhere.com/", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
