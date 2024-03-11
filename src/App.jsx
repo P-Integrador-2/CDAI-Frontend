@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography, Grid, CardContent, Card} from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import MyIcon from './assets/imageIcon.png'
@@ -34,7 +34,7 @@ function App() {
 
   const handlePhotoClick = async () => {
     const context = canvasRef.current.getContext('2d');
-    context.drawImage(videoRef.current, 0, 0, 240, 160);
+    context.drawImage(videoRef.current, 0, 0, 220, 140);
 
     // Convertir la imagen del canvas a un blob
     const blob = await new Promise(resolve => canvasRef.current.toBlob(resolve));
@@ -103,8 +103,8 @@ function App() {
       </header>
 
       <Container sx={{ display: 'flex', justifyContent: 'center', minWidth: '100%' }}>
-
-        <section className="cam-container">
+        <Grid container justifyContent={'center'} alignContent={'center'}>
+        <Grid item xs={12} md={8} justifyContent={'center'} alignContent={'center'} textAlign={'center'}>
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 1 }} >
             <Typography variant='h3' color="#00a388">
               Smart capacity counting
@@ -114,15 +114,15 @@ function App() {
           
 
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 4 }} >
-          <div style={{ border: '3px solid #00a388',backgroundColor:'#000000', borderRadius: '8px', overflow: 'hidden', width: '520px', height: '340px' }}>
+          <div style={{ border: '3px solid #00a388',backgroundColor:'#000000', borderRadius: '8px', overflow: 'hidden', width: '520px', height: '340px', position: 'relative' }}>
           {progress && (
-              <div style={{ backgroundColor:'rgb(15,15,15)', position: 'absolute', width: '520px', height: '340px'}}>
-                <RotatingSquare   height="80"  width="80" color="#00a388"   ariaLabel="loading"  wrapperStyle={{marginLeft:'43%', marginTop:'25%'}}  wrapperClass="" visible={true}/>
+              <div style={{ backgroundColor:'rgb(15,15,15)', position: 'absolute', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <RotatingSquare   height="80"  width="80" color="#00a388"   ariaLabel="loading"   visible={true}/>
               </div>
             )}
           {!progress && responseData && (
-            <div style={{ backgroundColor:'#FFFFFF', position: 'absolute', width: '520px', height: '340px'}}>
-              <Typography variant="h5" color="#00a388" marginLeft='31%' marginTop='25%'>
+            <div style={{ backgroundColor:'#FFFFFF', position: 'absolute', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Typography variant="h5" color="#00a388" >
                 Number of people: {responseData.promedio_respuestas}
                </Typography>
             </div>
@@ -131,9 +131,7 @@ function App() {
 
           </div>
           </Box>
-          <div className="canvas-wrap" style={{ display: 'none' }}>
-            <canvas className="canvas" width="240" height="160" ref={canvasRef}></canvas>
-          </div>
+          
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 4 }}>
             <Button variant='contained' onClick={handlePhotoClick} style={{backgroundColor:'#00a388'}}>Take a Photo</Button>
             <Button variant='contained'  onClick={handleResetClick} style={{backgroundColor:'#ff5362', marginLeft:'8px'}}>Reset</Button>
@@ -141,19 +139,31 @@ function App() {
 
           
           
-        </section>
+        </Grid>
+        <Grid item xs={5} md={1} >
+        <div className="canvas-wrap" style={{ display: 'none' }}>
+            <canvas className="canvas" width="220" height="140" ref={canvasRef}></canvas>
+          </div>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
           {
             images.length !== 0 ?
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+
+              <Card sx={{height:'auto'}}>
+                <CardContent sx={{height:'auto'}}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                 {images.map((blob, i) => (
                   <img src={URL.createObjectURL(blob)} className="photo" alt={`Image ${i}`} key={i} />
                 ))}
               </Box>
+                </CardContent>
+              </Card>  
+             
               :
               <></>
           }
           </Box>
+         </Grid>
+        </Grid>
 
       </Container>
     </Box>
