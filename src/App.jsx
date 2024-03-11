@@ -59,13 +59,15 @@ function App() {
 
     try {
       setProgress(true); //inicia el loader
-      const response = await axios.post("http://localhost:5000/", formData, {
+      
+      const response = await axios.post("https://cdaiserver.pythonanywhere.com/", formData, {
+
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       console.log(response.data);
-      
+      setResponseData(response.data);
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
     }finally {
