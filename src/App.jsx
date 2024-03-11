@@ -123,7 +123,7 @@ function App() {
           {!progress && responseData && (
             <div style={{ backgroundColor:'#FFFFFF', position: 'absolute', width: '520px', height: '340px'}}>
               <Typography variant="h5" color="#00a388" marginLeft='31%' marginTop='25%'>
-                Namber of people: {responseData.promedio_respuestas}
+                Number of people: {responseData.promedio_respuestas}
                </Typography>
             </div>
           )}  
