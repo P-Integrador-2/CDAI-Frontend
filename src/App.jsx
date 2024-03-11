@@ -3,6 +3,7 @@ import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography } from 
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import MyIcon from './assets/imageIcon.png'
+import { RotatingSquare} from 'react-loader-spinner'
 
 function App() {
   const videoRef = useRef(null);
@@ -10,6 +11,7 @@ function App() {
 
   const [images, setImages] = useState([])
   const [progress, setProgress] = useState(false);
+  
 
   const constraints = {
     video: { width: 520, height: 340 },
@@ -45,13 +47,7 @@ function App() {
       setImages(dataImages);
       sendImages(dataImages)
 
-      // Mostrar la barra de progreso durante 5 segundos
-      setProgress(true);
-      setTimeout(() => {
-        // Limpiar el array de imágenes y reiniciar la barra de progreso
-        setImages([]);
-        setProgress(false);
-      }, 5000);
+
     }
   };
 
@@ -62,14 +58,18 @@ function App() {
     });
 
     try {
+      setProgress(true); //inicia el loader
       const response = await axios.post("http://localhost:5000/", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       console.log(response.data);
+      
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
+    }finally {
+      setProgress(false); // Finaliza el loader
     }
   };
 
@@ -108,7 +108,14 @@ function App() {
 
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 4 }} >
           <div style={{ border: '3px solid #00a388',backgroundColor:'#000000', borderRadius: '8px', overflow: 'hidden', width: '520px', height: '340px' }}>
+          {progress && (
+              <div style={{ backgroundColor:'rgb(15,15,15)', position: 'absolute', width: '520px', height: '340px'}}>
+                <RotatingSquare   height="80"  width="80" color="#00a388"   ariaLabel="loading"  wrapperStyle={{marginLeft:'43%', marginTop:'25%'}}  wrapperClass="" visible={true}/>
+              </div>
+            )}
+          
             <video className="video" ref={videoRef}></video>
+
           </div>
           </Box>
           <div className="canvas-wrap" style={{ display: 'none' }}>
