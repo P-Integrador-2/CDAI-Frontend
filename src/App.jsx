@@ -2,16 +2,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, Container, IconButton, Toolbar, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-
+import MyIcon from './assets/imageIcon.png'
 
 function App() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   const [images, setImages] = useState([])
+  const [progress, setProgress] = useState(false);
 
   const constraints = {
-    video: { width: 420, height: 340 },
+    video: { width: 520, height: 340 },
     audio: false,
   };
 
@@ -31,7 +32,7 @@ function App() {
 
   const handlePhotoClick = async () => {
     const context = canvasRef.current.getContext('2d');
-    context.drawImage(videoRef.current, 0, 0, 420, 340);
+    context.drawImage(videoRef.current, 0, 0, 240, 160);
 
     // Convertir la imagen del canvas a un blob
     const blob = await new Promise(resolve => canvasRef.current.toBlob(resolve));
@@ -43,6 +44,14 @@ function App() {
       const dataImages = [...images, blob]
       setImages(dataImages);
       sendImages(dataImages)
+
+      // Mostrar la barra de progreso durante 5 segundos
+      setProgress(true);
+      setTimeout(() => {
+        // Limpiar el array de imágenes y reiniciar la barra de progreso
+        setImages([]);
+        setProgress(false);
+      }, 5000);
     }
   };
 
@@ -75,12 +84,12 @@ function App() {
 
       <header>
         <AppBar position="static">
-          <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-              <MenuIcon />
+          <Toolbar variant="dense" style={{backgroundColor:'#e5fffa', height:'70px'}}>
+            <IconButton edge="start" color="inherit" aria-label="menu" >
+            <img src={MyIcon} alt="My Icon" style={{ width: '60px', height: '60px' }} />
             </IconButton>
-            <Typography variant="h6" color="inherit" component="div">
-              Photos
+            <Typography variant="h6" color="#00a388" component="div">
+              AFOROWISE
             </Typography>
           </Toolbar>
         </AppBar>
@@ -89,26 +98,34 @@ function App() {
       <Container sx={{ display: 'flex', justifyContent: 'center', minWidth: '100%' }}>
 
         <section className="cam-container">
-          <Box sx={{ display: 'flex', justifyContent: 'center', m: 2 }} >
-            <Typography variant='h3'>
-              Conteo de aforo inteligente
+          <Box sx={{ display: 'flex', justifyContent: 'center', m: 1 }} >
+            <Typography variant='h3' color="#00a388">
+              Smart capacity counting
             </Typography>
           </Box>
 
+          
+
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 4 }} >
+          <div style={{ border: '3px solid #00a388',backgroundColor:'#000000', borderRadius: '8px', overflow: 'hidden', width: '520px', height: '340px' }}>
             <video className="video" ref={videoRef}></video>
+          </div>
           </Box>
           <div className="canvas-wrap" style={{ display: 'none' }}>
-            <canvas className="canvas" width="400" height="320" ref={canvasRef}></canvas>
+            <canvas className="canvas" width="240" height="160" ref={canvasRef}></canvas>
           </div>
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 4 }}>
-            <Button variant='contained' onClick={handlePhotoClick}>Take a Photo</Button>
-
+            <Button variant='contained' onClick={handlePhotoClick} style={{backgroundColor:'#00a388'}}>Take a Photo</Button>
+            <Button variant='contained'  style={{backgroundColor:'#ff5362', marginLeft:'8px'}}>Reset</Button>
           </Box>
 
+          
+          
+        </section>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
           {
             images.length !== 0 ?
-              <Box sx={{ display: 'flex', gap: '30px', justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                 {images.map((blob, i) => (
                   <img src={URL.createObjectURL(blob)} className="photo" alt={`Image ${i}`} key={i} />
                 ))}
@@ -116,7 +133,7 @@ function App() {
               :
               <></>
           }
-        </section>
+          </Box>
 
       </Container>
     </Box>
