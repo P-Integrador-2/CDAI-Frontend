@@ -74,7 +74,6 @@ function App() {
   const handleResetClick = () => {
     setImages([]); // Establece el estado de las imágenes a un arreglo vacío
     setResponseData(false); //quita el mensaje
-    setOpenPopup(true);
   };
 
 
