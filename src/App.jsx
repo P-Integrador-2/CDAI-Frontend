@@ -74,7 +74,7 @@ function App() {
   const handleResetClick = () => {
     setImages([]); // Establece el estado de las imágenes a un arreglo vacío
     setResponseData(false); //quita el mensaje
-    
+    setOpenPopup(true);
   };
 
 
@@ -135,7 +135,7 @@ function App() {
 
       <Container sx={{ display: 'flex', justifyContent: 'center', minWidth: '100%' }}>
           <Dialog open={openPopup} >
-            <DialogContent>
+            <DialogContent sx={{display:'flex', flexDirection: 'column', justifyContent: 'center', gap: 2}}>
               <TextField
                 border= '3px solid #00a388'
                 label="Enter max capacity"
@@ -155,7 +155,7 @@ function App() {
           
         <Grid container justifyContent={'center'} alignContent={'center'}>
          
-        <Grid item xs={12} md={8} justifyContent={'center'} alignContent={'center'} textAlign={'center'}>
+        <Grid item xs={12} md={images.length !==0 ? 8:12} justifyContent={'center'} alignContent={'center'} textAlign={'center'}>
           <Box sx={{ display: 'flex', justifyContent: 'center', m: 1 }} >
             <Typography variant='h3' color="#00a388">
               Smart capacity counting
@@ -201,7 +201,7 @@ function App() {
           
           
         </Grid>
-        <Grid item xs={5} md={1} >
+        <Grid item xs={12} md={4} >
         <div className="canvas-wrap" style={{ display: 'none' }}>
             <canvas className="canvas" width="220" height="140" ref={canvasRef}></canvas>
           </div>
@@ -213,7 +213,10 @@ function App() {
                 <CardContent sx={{height:'auto'}}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                 {images.map((blob, i) => (
-                  <img src={URL.createObjectURL(blob)} className="photo" alt={`Image ${i}`} key={i} />
+                  <Box key={i} >
+                    <img src={URL.createObjectURL(blob)} className="photo" alt={`Image ${i}`} />
+                    <Typography align='center'>Image {i+1}</Typography>
+                  </Box>
                 ))}
               </Box>
                 </CardContent>
